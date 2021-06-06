@@ -15,8 +15,6 @@ I called upon C functions using SWIG to interface C code into a Python library. 
 
 Instructions to Run:
 
-\*\*\*If running docker commands results in a &quot;Couldn&#39;t connect to Docker daemon&quot; error, all docker commands must be prepended with sudo (ie. &quot;sudo docker-compose up -d&quot;) to execute properly\*\*\*
-
 1. Copy my Project Directory &quot;Final&quot;
 
 2. &quot;cd Final&quot;

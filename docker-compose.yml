@@ -1,0 +1,38 @@
+version: '3'
+services:
+    rabbitmq:
+        image: rabbitmq
+        container_name: rabbitserver
+        command: rabbitmq-server
+        expose:
+            - "5672"
+            - "15672"
+        restart: always
+        healthcheck:
+          test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+          interval: 5s
+          timeout: 15s
+          retries: 1
+    GoRPC:
+        build:
+          context: .
+          dockerfile: Dockerfile-go
+        image: goimagerpc
+        container_name: imageRPC
+        volumes:
+            - .:/gorpc
+        command: go run /gorpc/imageRPC.go
+        restart: on-failure
+        depends_on:
+          - rabbitmq
+    PyInterface:
+        build:
+          context: .
+          dockerfile: Dockerfile-python
+        image: maininterface
+        container_name: pyinterface
+        volumes:
+            - .:/pyin
+        command: /bin/bash -c "cd /pyin; make; pip3 install pika; tail -F anything"
+        tty: true
+        restart: on-failure

@@ -1,0 +1,26 @@
+FROM python:latest
+
+RUN wget http://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.16.tar.gz \
+    && tar -xvzf libiconv-1.16.tar.gz \
+    && cd libiconv-1.16 \
+    && ./configure --prefix=/usr/local/lib \
+    && make \
+    && make install \
+    && cd /usr/local/lib \
+    && ln -s lib/libiconv.so libiconv.so \
+    && ln -s libpython3.8.so.1.0 libpython.so \
+    && ln -s lib/libiconv.so.2 libiconv.so.2
+
+RUN apt-get update && apt-get install -y swig vim
+RUN git clone https://github.com/chokkan/simstring.git
+RUN cd simstring \
+    && autoreconf -i \
+    && ./configure \
+    && cd swig/python \
+    && ./prepare.sh --swig \
+    && python setup.py build_ext \
+    && python setup.py install
+
+RUN pip3 install numpy
+RUN pip3 install pillow
+RUN pip3 install pika

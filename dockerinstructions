@@ -1,0 +1,7 @@
+sudo docker-compose up -d
+sudo docker exec -it pyinterface /bin/bash
+cd pyin
+python3 mainInterface.py
+
+exit
+sudo docker-compose down

@@ -1,0 +1,3 @@
+FROM hybridgroup/gocv
+
+RUN go get github.com/streadway/amqp
